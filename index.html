@@ -47,13 +47,27 @@ header {
   justify-content: space-between;
 }
 .logo {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--coral);
+  display: flex;
+  align-items: center;
+  gap: 14px;
   text-decoration: none;
-  letter-spacing: -0.5px;
 }
-.logo span { color: var(--dark); }
+.logo img {
+  height: 44px;
+  width: auto;
+}
+.logo .logo-tagline {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray);
+  line-height: 1.3;
+  border-left: 2px solid #e0e0e0;
+  padding-left: 14px;
+}
+.logo .logo-tagline strong {
+  color: var(--coral);
+  font-weight: 600;
+}
 .header-right { display: flex; align-items: center; gap: 16px; }
 .lang-toggle {
   display: flex;
@@ -77,13 +91,6 @@ header {
   background: var(--coral);
   color: var(--white);
 }
-.back-link {
-  font-size: 13px;
-  color: var(--gray);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.back-link:hover { color: var(--coral); }
 
 /* ── HERO ── */
 .hero {
@@ -107,7 +114,7 @@ header {
 
 /* ── PROGRESS BAR ── */
 .progress-wrap {
-  max-width: 900px;
+  max-width: 1100px;
   margin: -20px auto 0;
   padding: 0 24px;
   position: relative;
@@ -117,7 +124,7 @@ header {
   background: var(--white);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 20px 28px;
+  padding: 22px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -163,7 +170,7 @@ header {
 
 /* ── MAIN LAYOUT ── */
 .main-wrap {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 32px auto;
   padding: 0 24px;
   display: grid;
@@ -171,7 +178,7 @@ header {
   gap: 28px;
 }
 @media (min-width: 900px) {
-  .main-wrap { grid-template-columns: 1fr 320px; }
+  .main-wrap { grid-template-columns: 1fr 340px; }
 }
 
 /* ── STEP PANELS ── */
@@ -180,7 +187,7 @@ header {
   background: var(--white);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 32px;
+  padding: 40px 44px;
   animation: fadeIn 0.35s ease;
 }
 .step-panel.active { display: block; }
@@ -189,9 +196,9 @@ header {
   to { opacity: 1; transform: translateY(0); }
 }
 .step-panel h2 {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .step-panel .subtitle {
   color: var(--gray);
@@ -202,15 +209,15 @@ header {
 /* ── OPTION CARDS ── */
 .options-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
 }
-.options-grid.small { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+.options-grid.small { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 .option-card {
   background: var(--light-gray);
   border: 2px solid transparent;
   border-radius: 10px;
-  padding: 18px 14px;
+  padding: 22px 16px;
   text-align: center;
   cursor: pointer;
   transition: all 0.25s;
@@ -226,17 +233,17 @@ header {
   background: #fff5f5;
 }
 .option-card .icon {
-  font-size: 30px;
-  margin-bottom: 8px;
+  font-size: 36px;
+  margin-bottom: 10px;
   display: block;
 }
 .option-card .name {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.3;
 }
 .option-card .detail {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--gray);
   margin-top: 3px;
 }
@@ -455,13 +462,15 @@ footer a:hover { text-decoration: underline; }
 <!-- ═══════ HEADER ═══════ -->
 <header>
   <div class="header-inner">
-    <a href="https://www.sockies.at" class="logo">sockies<span>.at</span></a>
+    <a href="https://www.sockies.at" class="logo">
+      <img src="https://www.sockies.at/wp-content/uploads/2020/03/400x200.jpg" alt="Sockies.at Logo">
+      <div class="logo-tagline" data-t="logoTagline">Design your socks<br>by <strong>SOCKIES</strong></div>
+    </a>
     <div class="header-right">
       <div class="lang-toggle">
         <button class="lang-btn active" data-lang="de" onclick="setLang('de')">DE</button>
         <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
       </div>
-      <a href="https://www.sockies.at" class="back-link" data-t="backToShop">← Zurück zum Shop</a>
     </div>
   </div>
 </header>
@@ -777,7 +786,7 @@ footer a:hover { text-decoration: underline; }
 /* ═══════ TRANSLATIONS ═══════ */
 const T = {
   de: {
-    backToShop: '← Zurück zum Shop',
+    logoTagline: 'Gestalte deine Socken<br>by <strong>SOCKIES</strong>',
     heroTitle: 'Deine Socken. Dein Design.',
     heroSub: 'Konfiguriere deine individuellen Socken in wenigen Schritten — Materialien, Stil und Design nach deinem Wunsch.',
     steps: ['Zielgruppe', 'Höhe', 'Verwendung', 'Material', 'Temperatur', 'Design & Kontakt', 'Zusammenfassung'],
@@ -812,7 +821,7 @@ const T = {
     emailSubject: 'Socken-Konfigurator Anfrage',
   },
   en: {
-    backToShop: '← Back to Shop',
+    logoTagline: 'Design your socks<br>by <strong>SOCKIES</strong>',
     heroTitle: 'Your Socks. Your Design.',
     heroSub: 'Configure your custom socks in a few simple steps — materials, style and design to your liking.',
     steps: ['Target Group', 'Height', 'Usage', 'Material', 'Temperature', 'Design & Contact', 'Summary'],
