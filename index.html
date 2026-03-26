@@ -39,9 +39,9 @@ header {
   z-index: 100;
 }
 .header-inner {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,24 +49,25 @@ header {
 .logo {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   text-decoration: none;
 }
 .logo img {
-  height: 44px;
+  height: 50px;
   width: auto;
 }
 .logo .logo-tagline {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--gray);
+  color: var(--dark);
   line-height: 1.3;
-  border-left: 2px solid #e0e0e0;
-  padding-left: 14px;
+  border-left: 2px solid var(--coral);
+  padding-left: 16px;
 }
 .logo .logo-tagline strong {
   color: var(--coral);
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 15px;
 }
 .header-right { display: flex; align-items: center; gap: 16px; }
 .lang-toggle {
@@ -114,8 +115,8 @@ header {
 
 /* ── PROGRESS BAR ── */
 .progress-wrap {
-  max-width: 1100px;
-  margin: -20px auto 0;
+  max-width: 1400px;
+  margin: -24px auto 0;
   padding: 0 24px;
   position: relative;
   z-index: 10;
@@ -124,7 +125,7 @@ header {
   background: var(--white);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 22px 32px;
+  padding: 24px 36px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -134,14 +135,14 @@ header {
 .progress-step {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   white-space: nowrap;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--gray);
   transition: color 0.3s;
 }
 .progress-step .num {
-  width: 28px; height: 28px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   background: #e0e0e0;
   color: var(--white);
@@ -149,22 +150,24 @@ header {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
   transition: background 0.3s;
   flex-shrink: 0;
 }
 .progress-step.active .num { background: var(--coral); }
 .progress-step.done .num { background: var(--teal); }
-.progress-step.active, .progress-step.done { color: var(--dark); }
+.progress-step.active { color: var(--dark); font-weight: 600; }
+.progress-step.done { color: var(--dark); }
 .progress-step .label { display: none; }
 @media (min-width: 768px) {
-  .progress-step .label { display: inline; }
+  .progress-step .label { display: inline; font-size: 14px; }
 }
 .progress-line {
   flex: 1;
-  height: 2px;
+  height: 3px;
   background: #e0e0e0;
-  min-width: 12px;
+  min-width: 16px;
+  border-radius: 2px;
 }
 .progress-line.done { background: var(--teal); }
 
@@ -427,6 +430,163 @@ header {
 .success-screen h2 { font-size: 28px; margin-bottom: 10px; color: var(--teal-dark); }
 .success-screen p { color: var(--gray); font-size: 16px; max-width: 500px; margin: 0 auto 24px; }
 
+/* ── HOW IT WORKS ── */
+.how-it-works {
+  max-width: 1400px;
+  margin: 60px auto 0;
+  padding: 0 24px;
+}
+.how-it-works h2 {
+  text-align: center;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.how-it-works .section-sub {
+  text-align: center;
+  color: var(--gray);
+  font-size: 15px;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+.process-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+  position: relative;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.process-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+.process-card .step-num {
+  position: absolute;
+  top: -14px;
+  left: 24px;
+  width: 32px;
+  height: 32px;
+  background: var(--coral);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+.process-card .pc-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+  display: block;
+}
+.process-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.process-card p {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.5;
+}
+.min-order-note {
+  text-align: center;
+  margin-top: 28px;
+  padding: 16px 24px;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: 14px;
+  color: var(--dark);
+}
+.min-order-note strong { color: var(--coral); }
+
+/* ── GALLERY ── */
+.gallery-section {
+  max-width: 1400px;
+  margin: 60px auto 0;
+  padding: 0 24px;
+}
+.gallery-section h2 {
+  text-align: center;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.gallery-section .section-sub {
+  text-align: center;
+  color: var(--gray);
+  font-size: 15px;
+  margin-bottom: 32px;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.gallery-item {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  aspect-ratio: 4/3;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s;
+}
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+/* ── LIGHTBOX ── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  cursor: pointer;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  color: white;
+  font-size: 36px;
+  cursor: pointer;
+  font-weight: 300;
+  line-height: 1;
+}
+
 /* ── FOOTER ── */
 footer {
   background: var(--dark);
@@ -464,7 +624,7 @@ footer a:hover { text-decoration: underline; }
   <div class="header-inner">
     <a href="https://www.sockies.at" class="logo">
       <img src="https://www.sockies.at/wp-content/uploads/2020/03/400x200.jpg" alt="Sockies.at Logo">
-      <div class="logo-tagline" data-t="logoTagline">Design your socks<br>by <strong>SOCKIES</strong></div>
+      <div class="logo-tagline">Design your socks<br>by <strong>SOCKIES</strong></div>
     </a>
     <div class="header-right">
       <div class="lang-toggle">
@@ -774,6 +934,91 @@ footer a:hover { text-decoration: underline; }
   <button class="btn btn-next" onclick="resetConfigurator()" data-t="btnNewConfig">🔄 Neue Konfiguration starten</button>
 </div>
 
+<!-- ═══════ HOW IT WORKS ═══════ -->
+<section class="how-it-works" id="howItWorks">
+  <h2 data-t="hiwTitle">So funktioniert's</h2>
+  <p class="section-sub" data-t="hiwSub">Von der Idee bis zur fertigen Socke — in 7 einfachen Schritten zu deinem individuellen Design.</p>
+  <div class="process-grid">
+    <div class="process-card">
+      <span class="step-num">1</span>
+      <span class="pc-icon">🎨</span>
+      <h3 data-t="hiw1Title">Designvorschlag</h3>
+      <p data-t="hiw1Desc">Sende uns dein Design oder wir entwickeln es gemeinsam. Wir stimmen Hauptelemente und Farben ab.</p>
+    </div>
+    <div class="process-card">
+      <span class="step-num">2</span>
+      <span class="pc-icon">📏</span>
+      <h3 data-t="hiw2Title">Mengen & Größen</h3>
+      <p data-t="hiw2Desc">Wähle die gewünschten Größen und Stückzahlen. Mindestbestellmenge: 200 Paar.</p>
+    </div>
+    <div class="process-card">
+      <span class="step-num">3</span>
+      <span class="pc-icon">📅</span>
+      <h3 data-t="hiw3Title">Terminabstimmung</h3>
+      <p data-t="hiw3Desc">Gemeinsam legen wir einen realistischen Liefertermin fest — abhängig von Designfreigabe und Komplexität.</p>
+    </div>
+    <div class="process-card">
+      <span class="step-num">4</span>
+      <span class="pc-icon">🔧</span>
+      <h3 data-t="hiw4Title">Feinabstimmung</h3>
+      <p data-t="hiw4Desc">Dein Design wird für die Produktion optimiert. Wir verwenden ausschließlich atmungsaktive, hautfreundliche Materialien.</p>
+    </div>
+    <div class="process-card">
+      <span class="step-num">5</span>
+      <span class="pc-icon">🧪</span>
+      <h3 data-t="hiw5Title">Musterproduktion</h3>
+      <p data-t="hiw5Desc">Wir fertigen Testmuster an und senden dir Fotos zur finalen Freigabe. Anpassungen sind jederzeit möglich.</p>
+    </div>
+    <div class="process-card">
+      <span class="step-num">6</span>
+      <span class="pc-icon">🏭</span>
+      <h3 data-t="hiw6Title">Produktion</h3>
+      <p data-t="hiw6Desc">Nach deiner Freigabe starten wir die Serienproduktion: Stricken, Nähen, Bügeln und Etikettieren.</p>
+    </div>
+    <div class="process-card">
+      <span class="step-num">7</span>
+      <span class="pc-icon">📦</span>
+      <h3 data-t="hiw7Title">Verpackung & Versand</h3>
+      <p data-t="hiw7Desc">Qualitätsgeprüfte Socken werden individuell verpackt und direkt an dich geliefert.</p>
+    </div>
+  </div>
+  <div class="min-order-note" data-t="minOrder">
+    <strong>Mindestbestellmenge:</strong> 200 Paar | <strong>Versand:</strong> Kostenlos innerhalb Österreichs ab 50 €
+  </div>
+</section>
+
+<!-- ═══════ GALLERY ═══════ -->
+<section class="gallery-section" id="gallery">
+  <h2 data-t="galleryTitle">Unsere Referenzen</h2>
+  <p class="section-sub" data-t="gallerySub">Bereits realisierte Custom-Designs für zufriedene Kunden.</p>
+  <div class="gallery-grid">
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="images/IMG_1089.jpg" alt="Custom Socks Design" loading="lazy">
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="images/IMG_7820.jpg" alt="Vienna Custom Socks" loading="lazy">
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="images/IMG_8353.jpg" alt="Custom Socks Lifestyle" loading="lazy">
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="images/20210720_193237.jpg" alt="FM4 Custom Socks" loading="lazy">
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="images/20210713_142957.jpg" alt="Custom Socks with Packaging" loading="lazy">
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="images/IMG_1072.jpg" alt="Bulk Custom Socks Order" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <img id="lightboxImg" src="" alt="Preview">
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -786,7 +1031,6 @@ footer a:hover { text-decoration: underline; }
 /* ═══════ TRANSLATIONS ═══════ */
 const T = {
   de: {
-    logoTagline: 'Gestalte deine Socken<br>by <strong>SOCKIES</strong>',
     heroTitle: 'Deine Socken. Dein Design.',
     heroSub: 'Konfiguriere deine individuellen Socken in wenigen Schritten — Materialien, Stil und Design nach deinem Wunsch.',
     steps: ['Zielgruppe', 'Höhe', 'Verwendung', 'Material', 'Temperatur', 'Design & Kontakt', 'Zusammenfassung'],
@@ -819,9 +1063,20 @@ const T = {
     toastRequired: 'Bitte fülle alle Pflichtfelder aus (Name & E-Mail)',
     toastSelect: 'Bitte wähle mindestens eine Option aus',
     emailSubject: 'Socken-Konfigurator Anfrage',
+    hiwTitle: "So funktioniert's",
+    hiwSub: 'Von der Idee bis zur fertigen Socke — in 7 einfachen Schritten zu deinem individuellen Design.',
+    hiw1Title: 'Designvorschlag', hiw1Desc: 'Sende uns dein Design oder wir entwickeln es gemeinsam. Wir stimmen Hauptelemente und Farben ab.',
+    hiw2Title: 'Mengen & Größen', hiw2Desc: 'Wähle die gewünschten Größen und Stückzahlen. Mindestbestellmenge: 200 Paar.',
+    hiw3Title: 'Terminabstimmung', hiw3Desc: 'Gemeinsam legen wir einen realistischen Liefertermin fest — abhängig von Designfreigabe und Komplexität.',
+    hiw4Title: 'Feinabstimmung', hiw4Desc: 'Dein Design wird für die Produktion optimiert. Wir verwenden ausschließlich atmungsaktive, hautfreundliche Materialien.',
+    hiw5Title: 'Musterproduktion', hiw5Desc: 'Wir fertigen Testmuster an und senden dir Fotos zur finalen Freigabe. Anpassungen sind jederzeit möglich.',
+    hiw6Title: 'Produktion', hiw6Desc: 'Nach deiner Freigabe starten wir die Serienproduktion: Stricken, Nähen, Bügeln und Etikettieren.',
+    hiw7Title: 'Verpackung & Versand', hiw7Desc: 'Qualitätsgeprüfte Socken werden individuell verpackt und direkt an dich geliefert.',
+    minOrder: '<strong>Mindestbestellmenge:</strong> 200 Paar | <strong>Versand:</strong> Kostenlos innerhalb Österreichs ab 50 €',
+    galleryTitle: 'Unsere Referenzen',
+    gallerySub: 'Bereits realisierte Custom-Designs für zufriedene Kunden.',
   },
   en: {
-    logoTagline: 'Design your socks<br>by <strong>SOCKIES</strong>',
     heroTitle: 'Your Socks. Your Design.',
     heroSub: 'Configure your custom socks in a few simple steps — materials, style and design to your liking.',
     steps: ['Target Group', 'Height', 'Usage', 'Material', 'Temperature', 'Design & Contact', 'Summary'],
@@ -854,6 +1109,18 @@ const T = {
     toastRequired: 'Please fill in all required fields (Name & Email)',
     toastSelect: 'Please select at least one option',
     emailSubject: 'Sock Configurator Request',
+    hiwTitle: 'How It Works',
+    hiwSub: 'From idea to finished sock — your custom design in 7 simple steps.',
+    hiw1Title: 'Design Proposal', hiw1Desc: 'Send us your design or we develop it together. We align on key elements and colors.',
+    hiw2Title: 'Quantities & Sizes', hiw2Desc: 'Choose your desired sizes and quantities. Minimum order: 200 pairs.',
+    hiw3Title: 'Timeline Agreement', hiw3Desc: 'Together we set a realistic delivery date — depending on design approval and complexity.',
+    hiw4Title: 'Detail Refinement', hiw4Desc: 'Your design is optimized for production. We use exclusively breathable, skin-friendly materials.',
+    hiw5Title: 'Sample Production', hiw5Desc: 'We produce test samples and send you photos for final approval. Adjustments possible anytime.',
+    hiw6Title: 'Production', hiw6Desc: 'After your approval, we start mass production: knitting, sewing, ironing, and labeling.',
+    hiw7Title: 'Packaging & Delivery', hiw7Desc: 'Quality-checked socks are individually packaged and delivered directly to you.',
+    minOrder: '<strong>Minimum order:</strong> 200 pairs | <strong>Shipping:</strong> Free within Austria from 50 €',
+    galleryTitle: 'Our References',
+    gallerySub: 'Custom designs already realized for satisfied customers.',
   }
 };
 
@@ -1067,6 +1334,16 @@ function resetConfigurator() {
   document.getElementById('successScreen').classList.remove('show');
   showStep(0);
   updateSummary();
+}
+
+/* ═══════ LIGHTBOX ═══════ */
+function openLightbox(el) {
+  const src = el.querySelector('img').src;
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
 }
 
 /* ═══════ TOAST ═══════ */
