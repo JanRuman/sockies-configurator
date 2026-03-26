@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sockies.at — Socken Konfigurator</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --coral: #ff5c5c;
+  --coral-light: #ff8a8a;
+  --teal: #7ce7d7;
+  --teal-dark: #5cc4b4;
+  --dark: #2d2d2d;
+  --gray: #878787;
+  --light-gray: #f6f6f8;
+  --white: #ffffff;
+  --shadow: 0 2px 16px rgba(0,0,0,0.08);
+  --shadow-hover: 0 4px 24px rgba(0,0,0,0.14);
+  --radius: 12px;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--dark);
+  background: var(--light-gray);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--white);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--coral);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+.logo span { color: var(--dark); }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.lang-toggle {
+  display: flex;
+  background: var(--light-gray);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+.lang-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: var(--gray);
+  transition: all 0.25s;
+}
+.lang-btn.active {
+  background: var(--coral);
+  color: var(--white);
+}
+.back-link {
+  font-size: 13px;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--coral); }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%);
+  color: var(--white);
+  text-align: center;
+  padding: 48px 24px 40px;
+}
+.hero h1 {
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.hero p {
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 300;
+  opacity: 0.92;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap {
+  max-width: 900px;
+  margin: -20px auto 0;
+  padding: 0 24px;
+  position: relative;
+  z-index: 10;
+}
+.progress-bar {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  overflow-x: auto;
+}
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--gray);
+  transition: color 0.3s;
+}
+.progress-step .num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+.progress-step.active .num { background: var(--coral); }
+.progress-step.done .num { background: var(--teal); }
+.progress-step.active, .progress-step.done { color: var(--dark); }
+.progress-step .label { display: none; }
+@media (min-width: 768px) {
+  .progress-step .label { display: inline; }
+}
+.progress-line {
+  flex: 1;
+  height: 2px;
+  background: #e0e0e0;
+  min-width: 12px;
+}
+.progress-line.done { background: var(--teal); }
+
+/* ── MAIN LAYOUT ── */
+.main-wrap {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+@media (min-width: 900px) {
+  .main-wrap { grid-template-columns: 1fr 320px; }
+}
+
+/* ── STEP PANELS ── */
+.step-panel {
+  display: none;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px;
+  animation: fadeIn 0.35s ease;
+}
+.step-panel.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.step-panel h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.step-panel .subtitle {
+  color: var(--gray);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* ── OPTION CARDS ── */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.options-grid.small { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+.option-card {
+  background: var(--light-gray);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 18px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  user-select: none;
+}
+.option-card:hover {
+  border-color: var(--teal);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+.option-card.selected {
+  border-color: var(--coral);
+  background: #fff5f5;
+}
+.option-card .icon {
+  font-size: 30px;
+  margin-bottom: 8px;
+  display: block;
+}
+.option-card .name {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.option-card .detail {
+  font-size: 11px;
+  color: var(--gray);
+  margin-top: 3px;
+}
+
+/* ── TEMPERATURE CARDS ── */
+.temp-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+.temp-card {
+  background: var(--light-gray);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.temp-card:hover { border-color: var(--teal); transform: translateY(-2px); }
+.temp-card.selected { border-color: var(--coral); background: #fff5f5; }
+.temp-card .temp-icon { font-size: 28px; margin-bottom: 6px; }
+.temp-card .temp-name { font-weight: 600; font-size: 15px; }
+.temp-card .temp-range { font-size: 13px; color: var(--gray); }
+
+/* ── FORM ── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--dark);
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  background: var(--white);
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--coral);
+}
+.form-group textarea { resize: vertical; min-height: 80px; }
+
+.file-upload {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+}
+.file-upload:hover { border-color: var(--teal); background: #f0fdfb; }
+.file-upload.has-file { border-color: var(--teal); background: #f0fdfb; }
+.file-upload input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.file-upload .upload-icon { font-size: 32px; margin-bottom: 6px; }
+.file-upload .upload-text { font-size: 14px; color: var(--gray); }
+.file-upload .file-name { font-size: 13px; color: var(--teal-dark); font-weight: 500; margin-top: 6px; }
+
+/* ── NAV BUTTONS ── */
+.step-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+  gap: 12px;
+}
+.btn {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-back {
+  background: var(--light-gray);
+  color: var(--dark);
+}
+.btn-back:hover { background: #e8e8ea; }
+.btn-next {
+  background: var(--coral);
+  color: var(--white);
+  margin-left: auto;
+}
+.btn-next:hover { background: #e84e4e; transform: translateY(-1px); }
+.btn-next:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+.btn-submit {
+  background: var(--teal);
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 36px;
+  width: 100%;
+}
+.btn-submit:hover { background: var(--teal-dark); }
+
+/* ── SIDEBAR SUMMARY ── */
+.summary-panel {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  position: sticky;
+  top: 90px;
+  height: fit-content;
+}
+.summary-panel h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
+.summary-item:last-child { border-bottom: none; }
+.summary-label { color: var(--gray); }
+.summary-value { font-weight: 500; text-align: right; max-width: 160px; }
+.summary-value.empty { color: #ccc; font-style: italic; font-weight: 400; }
+
+/* ── FINAL SUMMARY STEP ── */
+.final-summary {
+  background: var(--light-gray);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.final-summary .fs-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #e8e8ea;
+}
+.final-summary .fs-row:last-child { border-bottom: none; }
+.final-summary .fs-label { color: var(--gray); }
+.final-summary .fs-value { font-weight: 500; }
+
+/* ── SUCCESS MESSAGE ── */
+.success-screen {
+  display: none;
+  text-align: center;
+  padding: 60px 24px;
+}
+.success-screen.show { display: block; }
+.success-screen .check { font-size: 64px; margin-bottom: 16px; }
+.success-screen h2 { font-size: 28px; margin-bottom: 10px; color: var(--teal-dark); }
+.success-screen p { color: var(--gray); font-size: 16px; max-width: 500px; margin: 0 auto 24px; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark);
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  padding: 28px 24px;
+  font-size: 13px;
+  margin-top: 60px;
+}
+footer a { color: var(--teal); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--dark);
+  color: var(--white);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  opacity: 0;
+  transition: all 0.35s;
+  z-index: 200;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<header>
+  <div class="header-inner">
+    <a href="https://www.sockies.at" class="logo">sockies<span>.at</span></a>
+    <div class="header-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="de" onclick="setLang('de')">DE</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
+      <a href="https://www.sockies.at" class="back-link" data-t="backToShop">← Zurück zum Shop</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <h1 data-t="heroTitle">Deine Socken. Dein Design.</h1>
+  <p data-t="heroSub">Konfiguriere deine individuellen Socken in wenigen Schritten — Materialien, Stil und Design nach deinem Wunsch.</p>
+</section>
+
+<!-- ═══════ PROGRESS ═══════ -->
+<div class="progress-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- ═══════ MAIN ═══════ -->
+<div class="main-wrap" id="mainWrap">
+  <div class="steps-container">
+
+    <!-- STEP 1: Zielgruppe -->
+    <div class="step-panel active" data-step="0">
+      <h2 data-t="step1Title">Für wen sind die Socken?</h2>
+      <p class="subtitle" data-t="step1Sub">Wähle die Zielgruppe aus</p>
+      <div class="options-grid" id="grid-target">
+        <div class="option-card" data-value="Männer" data-value-en="Men" onclick="selectOption(this,'target')">
+          <span class="icon">👨</span><span class="name" data-t="tMen">Männer</span>
+        </div>
+        <div class="option-card" data-value="Frauen" data-value-en="Women" onclick="selectOption(this,'target')">
+          <span class="icon">👩</span><span class="name" data-t="tWomen">Frauen</span>
+        </div>
+        <div class="option-card" data-value="Kinder" data-value-en="Children" onclick="selectOption(this,'target')">
+          <span class="icon">🧒</span><span class="name" data-t="tChildren">Kinder</span>
+        </div>
+        <div class="option-card" data-value="Babys" data-value-en="Infants" onclick="selectOption(this,'target')">
+          <span class="icon">👶</span><span class="name" data-t="tInfants">Babys</span>
+        </div>
+      </div>
+      <div class="step-nav">
+        <span></span>
+        <button class="btn btn-next" onclick="nextStep()" disabled data-t="btnNext">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Höhe -->
+    <div class="step-panel" data-step="1">
+      <h2 data-t="step2Title">Welche Sockenhöhe?</h2>
+      <p class="subtitle" data-t="step2Sub">Wähle die gewünschte Länge</p>
+      <div class="options-grid" id="grid-height">
+        <div class="option-card" data-value="Klassisch" data-value-en="Classic" onclick="selectOption(this,'height')">
+          <span class="icon">🧦</span><span class="name" data-t="hClassic">Klassisch</span><span class="detail" data-t="hClassicD">Wadenhoch</span>
+        </div>
+        <div class="option-card" data-value="Mittel" data-value-en="Medium" onclick="selectOption(this,'height')">
+          <span class="icon">🧦</span><span class="name" data-t="hMedium">Mittel</span><span class="detail" data-t="hMediumD">Über dem Knöchel</span>
+        </div>
+        <div class="option-card" data-value="Niedrig" data-value-en="Low" onclick="selectOption(this,'height')">
+          <span class="icon">🧦</span><span class="name" data-t="hLow">Niedrig</span><span class="detail" data-t="hLowD">Knöchelhoch</span>
+        </div>
+        <div class="option-card" data-value="Extra kurz" data-value-en="Extra short" onclick="selectOption(this,'height')">
+          <span class="icon">👟</span><span class="name" data-t="hShort">Extra kurz</span><span class="detail" data-t="hShortD">Sneaker</span>
+        </div>
+        <div class="option-card" data-value="Unsichtbar" data-value-en="Invisible" onclick="selectOption(this,'height')">
+          <span class="icon">👣</span><span class="name" data-t="hInvisible">Unsichtbar</span><span class="detail" data-t="hInvisibleD">No-Show</span>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-back" onclick="prevStep()" data-t="btnBack">← Zurück</button>
+        <button class="btn btn-next" onclick="nextStep()" disabled data-t="btnNext">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Verwendung -->
+    <div class="step-panel" data-step="2">
+      <h2 data-t="step3Title">Wofür werden die Socken verwendet?</h2>
+      <p class="subtitle" data-t="step3Sub">Mehrfachauswahl möglich</p>
+      <div class="options-grid small" id="grid-usage">
+        <div class="option-card" data-value="Alltag" data-value-en="Everyday" onclick="toggleOption(this,'usage')">
+          <span class="icon">🏠</span><span class="name" data-t="uEveryday">Alltag</span>
+        </div>
+        <div class="option-card" data-value="Outdoor" data-value-en="Outdoor" onclick="toggleOption(this,'usage')">
+          <span class="icon">🏔️</span><span class="name">Outdoor</span>
+        </div>
+        <div class="option-card" data-value="Indoor" data-value-en="Indoor" onclick="toggleOption(this,'usage')">
+          <span class="icon">🏢</span><span class="name">Indoor</span>
+        </div>
+        <div class="option-card" data-value="Laufen" data-value-en="Running" onclick="toggleOption(this,'usage')">
+          <span class="icon">🏃</span><span class="name" data-t="uRunning">Laufen</span>
+        </div>
+        <div class="option-card" data-value="Trekking" data-value-en="Trekking" onclick="toggleOption(this,'usage')">
+          <span class="icon">🥾</span><span class="name">Trekking</span>
+        </div>
+        <div class="option-card" data-value="Fitness" data-value-en="Fitness" onclick="toggleOption(this,'usage')">
+          <span class="icon">💪</span><span class="name">Fitness</span>
+        </div>
+        <div class="option-card" data-value="Gesellschaft" data-value-en="Social/Formal" onclick="toggleOption(this,'usage')">
+          <span class="icon">👔</span><span class="name" data-t="uSocial">Gesellschaft</span>
+        </div>
+        <div class="option-card" data-value="Bergwandern" data-value-en="Mountain Hiking" onclick="toggleOption(this,'usage')">
+          <span class="icon">⛰️</span><span class="name" data-t="uMountain">Bergwandern</span>
+        </div>
+        <div class="option-card" data-value="Tennis" data-value-en="Tennis" onclick="toggleOption(this,'usage')">
+          <span class="icon">🎾</span><span class="name">Tennis</span>
+        </div>
+        <div class="option-card" data-value="Radsport" data-value-en="Cycling" onclick="toggleOption(this,'usage')">
+          <span class="icon">🚴</span><span class="name" data-t="uCycling">Radsport</span>
+        </div>
+        <div class="option-card" data-value="Spazieren" data-value-en="Walking" onclick="toggleOption(this,'usage')">
+          <span class="icon">🚶</span><span class="name" data-t="uWalking">Spazieren</span>
+        </div>
+        <div class="option-card" data-value="Jagd & Angeln" data-value-en="Hunting & Fishing" onclick="toggleOption(this,'usage')">
+          <span class="icon">🎣</span><span class="name" data-t="uHunting">Jagd & Angeln</span>
+        </div>
+        <div class="option-card" data-value="Arbeit" data-value-en="Work" onclick="toggleOption(this,'usage')">
+          <span class="icon">🔧</span><span class="name" data-t="uWork">Arbeit</span>
+        </div>
+        <div class="option-card" data-value="Gesundheitswesen" data-value-en="Healthcare" onclick="toggleOption(this,'usage')">
+          <span class="icon">🏥</span><span class="name" data-t="uHealthcare">Gesundheitswesen</span>
+        </div>
+        <div class="option-card" data-value="Koch & Kellner" data-value-en="Chef & Waiter" onclick="toggleOption(this,'usage')">
+          <span class="icon">👨‍🍳</span><span class="name" data-t="uChef">Koch & Kellner</span>
+        </div>
+        <div class="option-card" data-value="Inline-Skating" data-value-en="Inline Skating" onclick="toggleOption(this,'usage')">
+          <span class="icon">⛸️</span><span class="name">Inline-Skating</span>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-back" onclick="prevStep()" data-t="btnBack">← Zurück</button>
+        <button class="btn btn-next" onclick="nextStep()" disabled data-t="btnNext">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Material -->
+    <div class="step-panel" data-step="3">
+      <h2 data-t="step4Title">Welches Material?</h2>
+      <p class="subtitle" data-t="step4Sub">Mehrfachauswahl möglich</p>
+      <div class="options-grid small" id="grid-material">
+        <div class="option-card" data-value="Wolle" data-value-en="Wool" onclick="toggleOption(this,'material')">
+          <span class="icon">🐑</span><span class="name" data-t="mWool">Wolle</span>
+        </div>
+        <div class="option-card" data-value="Baumwolle" data-value-en="Cotton" onclick="toggleOption(this,'material')">
+          <span class="icon">🌿</span><span class="name" data-t="mCotton">Baumwolle</span>
+        </div>
+        <div class="option-card" data-value="SilproX®" onclick="toggleOption(this,'material')">
+          <span class="icon">✨</span><span class="name">SilproX®</span>
+        </div>
+        <div class="option-card" data-value="Merino" onclick="toggleOption(this,'material')">
+          <span class="icon">🐏</span><span class="name">Merino</span>
+        </div>
+        <div class="option-card" data-value="Viskose Bambus" data-value-en="Bamboo Viscose" onclick="toggleOption(this,'material')">
+          <span class="icon">🎋</span><span class="name" data-t="mBamboo">Viskose Bambus</span>
+        </div>
+        <div class="option-card" data-value="CLIMAYARN®" onclick="toggleOption(this,'material')">
+          <span class="icon">🌡️</span><span class="name">CLIMAYARN®</span>
+        </div>
+        <div class="option-card" data-value="100% Baumwolle" data-value-en="100% Cotton" onclick="toggleOption(this,'material')">
+          <span class="icon">🌱</span><span class="name" data-t="mCotton100">100% Baumwolle</span>
+        </div>
+        <div class="option-card" data-value="BIO Baumwolle" data-value-en="BIO Cotton" onclick="toggleOption(this,'material')">
+          <span class="icon">♻️</span><span class="name" data-t="mBioCotton">BIO Baumwolle</span>
+        </div>
+        <div class="option-card" data-value="Alpaka" data-value-en="Alpaca" onclick="toggleOption(this,'material')">
+          <span class="icon">🦙</span><span class="name" data-t="mAlpaca">Alpaka</span>
+        </div>
+        <div class="option-card" data-value="FILACTIVE®" onclick="toggleOption(this,'material')">
+          <span class="icon">⚡</span><span class="name">FILACTIVE®</span>
+        </div>
+        <div class="option-card" data-value="Kaschmir" data-value-en="Cashmere" onclick="toggleOption(this,'material')">
+          <span class="icon">💎</span><span class="name" data-t="mCashmere">Kaschmir</span>
+        </div>
+        <div class="option-card" data-value="CoolMax®" onclick="toggleOption(this,'material')">
+          <span class="icon">❄️</span><span class="name">CoolMax®</span>
+        </div>
+        <div class="option-card" data-value="Hanf" data-value-en="Hemp" onclick="toggleOption(this,'material')">
+          <span class="icon">🌿</span><span class="name" data-t="mHemp">Hanf</span>
+        </div>
+        <div class="option-card" data-value="Leinen" data-value-en="Linen" onclick="toggleOption(this,'material')">
+          <span class="icon">🧵</span><span class="name" data-t="mLinen">Leinen</span>
+        </div>
+        <div class="option-card" data-value="Thermo°Cool®" onclick="toggleOption(this,'material')">
+          <span class="icon">🔥</span><span class="name">Thermo°Cool®</span>
+        </div>
+        <div class="option-card" data-value="Modal®" onclick="toggleOption(this,'material')">
+          <span class="icon">🌳</span><span class="name">Modal®</span>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-back" onclick="prevStep()" data-t="btnBack">← Zurück</button>
+        <button class="btn btn-next" onclick="nextStep()" disabled data-t="btnNext">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Temperaturklasse -->
+    <div class="step-panel" data-step="4">
+      <h2 data-t="step5Title">Temperaturklasse</h2>
+      <p class="subtitle" data-t="step5Sub">Für welche Temperaturen sollen die Socken geeignet sein?</p>
+      <div class="temp-cards" id="grid-temp">
+        <div class="temp-card" data-value="TT A | 10–35 °C" onclick="selectOption(this,'temp')">
+          <div class="temp-icon">☀️</div>
+          <div class="temp-name">TT A</div>
+          <div class="temp-range">10 – 35 °C</div>
+          <div class="detail" data-t="tempA" style="margin-top:4px;font-size:12px;color:var(--gray)">Sommer & warme Tage</div>
+        </div>
+        <div class="temp-card" data-value="TT B | 0–20 °C" onclick="selectOption(this,'temp')">
+          <div class="temp-icon">🌤️</div>
+          <div class="temp-name">TT B</div>
+          <div class="temp-range">0 – 20 °C</div>
+          <div class="detail" data-t="tempB" style="margin-top:4px;font-size:12px;color:var(--gray)">Frühling & Herbst</div>
+        </div>
+        <div class="temp-card" data-value="TT C | -10 bis +5 °C" onclick="selectOption(this,'temp')">
+          <div class="temp-icon">🌨️</div>
+          <div class="temp-name">TT C</div>
+          <div class="temp-range">-10 bis +5 °C</div>
+          <div class="detail" data-t="tempC" style="margin-top:4px;font-size:12px;color:var(--gray)">Winter</div>
+        </div>
+        <div class="temp-card" data-value="TT D | -20 bis 0 °C" onclick="selectOption(this,'temp')">
+          <div class="temp-icon">❄️</div>
+          <div class="temp-name">TT D</div>
+          <div class="temp-range">-20 bis 0 °C</div>
+          <div class="detail" data-t="tempD" style="margin-top:4px;font-size:12px;color:var(--gray)">Extreme Kälte</div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-back" onclick="prevStep()" data-t="btnBack">← Zurück</button>
+        <button class="btn btn-next" onclick="nextStep()" disabled data-t="btnNext">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Design & Kontakt -->
+    <div class="step-panel" data-step="5">
+      <h2 data-t="step6Title">Dein Design & Kontaktdaten</h2>
+      <p class="subtitle" data-t="step6Sub">Lade dein Logo/Design hoch und hinterlasse deine Kontaktdaten</p>
+
+      <div class="file-upload" id="fileUpload">
+        <input type="file" id="designFile" accept=".png,.jpg,.jpeg,.svg,.pdf,.ai,.eps" onchange="handleFile(this)">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text" data-t="uploadText">Logo oder Design hochladen<br><small>PNG, JPG, SVG, PDF, AI, EPS</small></div>
+        <div class="file-name" id="fileName"></div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="form-grid">
+          <div class="form-group">
+            <label data-t="fName">Name *</label>
+            <input type="text" id="fName" required>
+          </div>
+          <div class="form-group">
+            <label data-t="fCompany">Firma</label>
+            <input type="text" id="fCompany">
+          </div>
+          <div class="form-group">
+            <label data-t="fEmail">E-Mail *</label>
+            <input type="email" id="fEmail" required>
+          </div>
+          <div class="form-group">
+            <label data-t="fPhone">Telefon</label>
+            <input type="tel" id="fPhone">
+          </div>
+          <div class="form-group">
+            <label data-t="fQty">Gewünschte Menge (Paare)</label>
+            <input type="number" id="fQty" min="1" placeholder="z.B. 100">
+          </div>
+          <div class="form-group">
+            <label data-t="fDelivery">Gewünschter Liefertermin</label>
+            <input type="date" id="fDelivery">
+          </div>
+          <div class="form-group full">
+            <label data-t="fNotes">Anmerkungen & besondere Wünsche</label>
+            <textarea id="fNotes" placeholder=""></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-back" onclick="prevStep()" data-t="btnBack">← Zurück</button>
+        <button class="btn btn-next" onclick="nextStep()" data-t="btnNext">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 7: Zusammenfassung -->
+    <div class="step-panel" data-step="6">
+      <h2 data-t="step7Title">Zusammenfassung</h2>
+      <p class="subtitle" data-t="step7Sub">Überprüfe deine Konfiguration und sende die Anfrage ab</p>
+      <div class="final-summary" id="finalSummary"></div>
+      <button class="btn btn-submit" onclick="submitRequest()" data-t="btnSubmit">🧦 Anfrage absenden</button>
+      <div class="step-nav" style="margin-top:12px">
+        <button class="btn btn-back" onclick="prevStep()" data-t="btnBack">← Zurück</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR SUMMARY -->
+  <aside class="summary-panel" id="summaryPanel">
+    <h3>🧦 <span data-t="summaryTitle">Deine Konfiguration</span></h3>
+    <div id="summaryContent"></div>
+  </aside>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="successScreen">
+  <div class="check">✅</div>
+  <h2 data-t="successTitle">Anfrage gesendet!</h2>
+  <p data-t="successMsg">Vielen Dank für deine Anfrage! Wir melden uns in Kürze bei dir unter der angegebenen E-Mail-Adresse.</p>
+  <button class="btn btn-next" onclick="resetConfigurator()" data-t="btnNewConfig">🔄 Neue Konfiguration starten</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <a href="https://www.sockies.at">sockies.at</a> — <span data-t="footerText">Handgefertigte Socken aus Leidenschaft</span></p>
+</footer>
+
+<script>
+/* ═══════ TRANSLATIONS ═══════ */
+const T = {
+  de: {
+    backToShop: '← Zurück zum Shop',
+    heroTitle: 'Deine Socken. Dein Design.',
+    heroSub: 'Konfiguriere deine individuellen Socken in wenigen Schritten — Materialien, Stil und Design nach deinem Wunsch.',
+    steps: ['Zielgruppe', 'Höhe', 'Verwendung', 'Material', 'Temperatur', 'Design & Kontakt', 'Zusammenfassung'],
+    step1Title: 'Für wen sind die Socken?', step1Sub: 'Wähle die Zielgruppe aus',
+    step2Title: 'Welche Sockenhöhe?', step2Sub: 'Wähle die gewünschte Länge',
+    step3Title: 'Wofür werden die Socken verwendet?', step3Sub: 'Mehrfachauswahl möglich',
+    step4Title: 'Welches Material?', step4Sub: 'Mehrfachauswahl möglich',
+    step5Title: 'Temperaturklasse', step5Sub: 'Für welche Temperaturen sollen die Socken geeignet sein?',
+    step6Title: 'Dein Design & Kontaktdaten', step6Sub: 'Lade dein Logo/Design hoch und hinterlasse deine Kontaktdaten',
+    step7Title: 'Zusammenfassung', step7Sub: 'Überprüfe deine Konfiguration und sende die Anfrage ab',
+    btnNext: 'Weiter →', btnBack: '← Zurück', btnSubmit: '🧦 Anfrage absenden', btnNewConfig: '🔄 Neue Konfiguration starten',
+    tMen: 'Männer', tWomen: 'Frauen', tChildren: 'Kinder', tInfants: 'Babys',
+    hClassic: 'Klassisch', hClassicD: 'Wadenhoch', hMedium: 'Mittel', hMediumD: 'Über dem Knöchel',
+    hLow: 'Niedrig', hLowD: 'Knöchelhoch', hShort: 'Extra kurz', hShortD: 'Sneaker', hInvisible: 'Unsichtbar', hInvisibleD: 'No-Show',
+    uEveryday: 'Alltag', uRunning: 'Laufen', uSocial: 'Gesellschaft', uMountain: 'Bergwandern',
+    uCycling: 'Radsport', uWalking: 'Spazieren', uHunting: 'Jagd & Angeln', uWork: 'Arbeit',
+    uHealthcare: 'Gesundheitswesen', uChef: 'Koch & Kellner',
+    mWool: 'Wolle', mCotton: 'Baumwolle', mBamboo: 'Viskose Bambus', mCotton100: '100% Baumwolle',
+    mBioCotton: 'BIO Baumwolle', mAlpaca: 'Alpaka', mCashmere: 'Kaschmir', mHemp: 'Hanf', mLinen: 'Leinen',
+    tempA: 'Sommer & warme Tage', tempB: 'Frühling & Herbst', tempC: 'Winter', tempD: 'Extreme Kälte',
+    uploadText: 'Logo oder Design hochladen<br><small>PNG, JPG, SVG, PDF, AI, EPS</small>',
+    fName: 'Name *', fCompany: 'Firma', fEmail: 'E-Mail *', fPhone: 'Telefon',
+    fQty: 'Gewünschte Menge (Paare)', fDelivery: 'Gewünschter Liefertermin', fNotes: 'Anmerkungen & besondere Wünsche',
+    summaryTitle: 'Deine Konfiguration',
+    summaryLabels: { target: 'Zielgruppe', height: 'Höhe', usage: 'Verwendung', material: 'Material', temp: 'Temperatur', name: 'Name', company: 'Firma', email: 'E-Mail', phone: 'Telefon', qty: 'Menge', delivery: 'Liefertermin', file: 'Design-Datei', notes: 'Anmerkungen' },
+    notSelected: 'nicht gewählt',
+    successTitle: 'Anfrage gesendet!',
+    successMsg: 'Vielen Dank für deine Anfrage! Wir melden uns in Kürze bei dir unter der angegebenen E-Mail-Adresse.',
+    footerText: 'Handgefertigte Socken aus Leidenschaft',
+    toastRequired: 'Bitte fülle alle Pflichtfelder aus (Name & E-Mail)',
+    toastSelect: 'Bitte wähle mindestens eine Option aus',
+    emailSubject: 'Socken-Konfigurator Anfrage',
+  },
+  en: {
+    backToShop: '← Back to Shop',
+    heroTitle: 'Your Socks. Your Design.',
+    heroSub: 'Configure your custom socks in a few simple steps — materials, style and design to your liking.',
+    steps: ['Target Group', 'Height', 'Usage', 'Material', 'Temperature', 'Design & Contact', 'Summary'],
+    step1Title: 'Who are the socks for?', step1Sub: 'Choose the target group',
+    step2Title: 'Which sock height?', step2Sub: 'Choose the desired length',
+    step3Title: 'What will the socks be used for?', step3Sub: 'Multiple selection possible',
+    step4Title: 'Which material?', step4Sub: 'Multiple selection possible',
+    step5Title: 'Temperature class', step5Sub: 'What temperatures should the socks be suitable for?',
+    step6Title: 'Your Design & Contact Details', step6Sub: 'Upload your logo/design and leave your contact details',
+    step7Title: 'Summary', step7Sub: 'Review your configuration and submit the request',
+    btnNext: 'Next →', btnBack: '← Back', btnSubmit: '🧦 Submit Request', btnNewConfig: '🔄 Start New Configuration',
+    tMen: 'Men', tWomen: 'Women', tChildren: 'Children', tInfants: 'Infants',
+    hClassic: 'Classic', hClassicD: 'Calf-high', hMedium: 'Medium', hMediumD: 'Above ankle',
+    hLow: 'Low', hLowD: 'Ankle-high', hShort: 'Extra short', hShortD: 'Sneaker', hInvisible: 'Invisible', hInvisibleD: 'No-Show',
+    uEveryday: 'Everyday', uRunning: 'Running', uSocial: 'Social/Formal', uMountain: 'Mountain Hiking',
+    uCycling: 'Cycling', uWalking: 'Walking', uHunting: 'Hunting & Fishing', uWork: 'Work',
+    uHealthcare: 'Healthcare', uChef: 'Chef & Waiter',
+    mWool: 'Wool', mCotton: 'Cotton', mBamboo: 'Bamboo Viscose', mCotton100: '100% Cotton',
+    mBioCotton: 'BIO Cotton', mAlpaca: 'Alpaca', mCashmere: 'Cashmere', mHemp: 'Hemp', mLinen: 'Linen',
+    tempA: 'Summer & warm days', tempB: 'Spring & autumn', tempC: 'Winter', tempD: 'Extreme cold',
+    uploadText: 'Upload logo or design<br><small>PNG, JPG, SVG, PDF, AI, EPS</small>',
+    fName: 'Name *', fCompany: 'Company', fEmail: 'Email *', fPhone: 'Phone',
+    fQty: 'Desired quantity (pairs)', fDelivery: 'Desired delivery date', fNotes: 'Notes & special requests',
+    summaryTitle: 'Your Configuration',
+    summaryLabels: { target: 'Target Group', height: 'Height', usage: 'Usage', material: 'Material', temp: 'Temperature', name: 'Name', company: 'Company', email: 'Email', phone: 'Phone', qty: 'Quantity', delivery: 'Delivery', file: 'Design File', notes: 'Notes' },
+    notSelected: 'not selected',
+    successTitle: 'Request Submitted!',
+    successMsg: 'Thank you for your request! We will contact you shortly at the email address provided.',
+    footerText: 'Handcrafted socks made with passion',
+    toastRequired: 'Please fill in all required fields (Name & Email)',
+    toastSelect: 'Please select at least one option',
+    emailSubject: 'Sock Configurator Request',
+  }
+};
+
+let lang = 'de';
+let currentStep = 0;
+const totalSteps = 7;
+
+const selections = {
+  target: null,
+  height: null,
+  usage: [],
+  material: [],
+  temp: null,
+};
+
+/* ═══════ LANGUAGE ═══════ */
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+  document.documentElement.lang = l;
+  applyTranslations();
+  buildProgressBar();
+  updateSummary();
+}
+
+function applyTranslations() {
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.dataset.t;
+    if (T[lang][key] !== undefined) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+        // skip
+      } else {
+        el.innerHTML = T[lang][key];
+      }
+    }
+  });
+}
+
+/* ═══════ PROGRESS BAR ═══════ */
+function buildProgressBar() {
+  const bar = document.getElementById('progressBar');
+  const labels = T[lang].steps;
+  let html = '';
+  for (let i = 0; i < totalSteps; i++) {
+    const cls = i < currentStep ? 'done' : (i === currentStep ? 'active' : '');
+    html += `<div class="progress-step ${cls}"><span class="num">${i < currentStep ? '✓' : i + 1}</span><span class="label">${labels[i]}</span></div>`;
+    if (i < totalSteps - 1) html += `<div class="progress-line ${i < currentStep ? 'done' : ''}"></div>`;
+  }
+  bar.innerHTML = html;
+}
+
+/* ═══════ OPTION SELECTION ═══════ */
+function selectOption(card, key) {
+  const parent = card.parentElement;
+  parent.querySelectorAll('.option-card, .temp-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selections[key] = card.dataset.value;
+  enableNextBtn();
+  updateSummary();
+}
+
+function toggleOption(card, key) {
+  card.classList.toggle('selected');
+  const grid = card.parentElement;
+  selections[key] = [...grid.querySelectorAll('.selected')].map(c => c.dataset.value);
+  enableNextBtn();
+  updateSummary();
+}
+
+function enableNextBtn() {
+  const panel = document.querySelector(`.step-panel[data-step="${currentStep}"]`);
+  const btn = panel.querySelector('.btn-next');
+  if (!btn) return;
+
+  let valid = false;
+  if (currentStep === 0) valid = selections.target;
+  else if (currentStep === 1) valid = selections.height;
+  else if (currentStep === 2) valid = selections.usage.length > 0;
+  else if (currentStep === 3) valid = selections.material.length > 0;
+  else if (currentStep === 4) valid = selections.temp;
+  else valid = true;
+
+  btn.disabled = !valid;
+}
+
+/* ═══════ NAVIGATION ═══════ */
+function showStep(idx) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.querySelector(`.step-panel[data-step="${idx}"]`);
+  if (panel) panel.classList.add('active');
+  currentStep = idx;
+  buildProgressBar();
+  enableNextBtn();
+  window.scrollTo({ top: 200, behavior: 'smooth' });
+
+  if (idx === 6) buildFinalSummary();
+}
+
+function nextStep() {
+  if (currentStep === 5) {
+    const name = document.getElementById('fName').value.trim();
+    const email = document.getElementById('fEmail').value.trim();
+    if (!name || !email) {
+      showToast(T[lang].toastRequired);
+      return;
+    }
+  }
+  if (currentStep < totalSteps - 1) showStep(currentStep + 1);
+}
+
+function prevStep() {
+  if (currentStep > 0) showStep(currentStep - 1);
+}
+
+/* ═══════ SIDEBAR SUMMARY ═══════ */
+function updateSummary() {
+  const L = T[lang].summaryLabels;
+  const ns = T[lang].notSelected;
+  const items = [
+    { label: L.target, value: selections.target },
+    { label: L.height, value: selections.height },
+    { label: L.usage, value: selections.usage.length ? selections.usage.join(', ') : null },
+    { label: L.material, value: selections.material.length ? selections.material.join(', ') : null },
+    { label: L.temp, value: selections.temp },
+  ];
+  const html = items.map(i =>
+    `<div class="summary-item"><span class="summary-label">${i.label}</span><span class="summary-value ${i.value ? '' : 'empty'}">${i.value || ns}</span></div>`
+  ).join('');
+  document.getElementById('summaryContent').innerHTML = html;
+}
+
+/* ═══════ FINAL SUMMARY ═══════ */
+function buildFinalSummary() {
+  const L = T[lang].summaryLabels;
+  const rows = [
+    [L.target, selections.target],
+    [L.height, selections.height],
+    [L.usage, selections.usage.join(', ')],
+    [L.material, selections.material.join(', ')],
+    [L.temp, selections.temp],
+    [L.name, document.getElementById('fName').value],
+    [L.company, document.getElementById('fCompany').value || '—'],
+    [L.email, document.getElementById('fEmail').value],
+    [L.phone, document.getElementById('fPhone').value || '—'],
+    [L.qty, document.getElementById('fQty').value || '—'],
+    [L.delivery, document.getElementById('fDelivery').value || '—'],
+    [L.file, document.getElementById('fileName').textContent || '—'],
+    [L.notes, document.getElementById('fNotes').value || '—'],
+  ];
+  document.getElementById('finalSummary').innerHTML = rows.map(([l, v]) =>
+    `<div class="fs-row"><span class="fs-label">${l}</span><span class="fs-value">${v}</span></div>`
+  ).join('');
+}
+
+/* ═══════ FILE UPLOAD ═══════ */
+function handleFile(input) {
+  const file = input.files[0];
+  const nameEl = document.getElementById('fileName');
+  const wrap = document.getElementById('fileUpload');
+  if (file) {
+    nameEl.textContent = '📎 ' + file.name;
+    wrap.classList.add('has-file');
+  } else {
+    nameEl.textContent = '';
+    wrap.classList.remove('has-file');
+  }
+}
+
+/* ═══════ SUBMIT ═══════ */
+function submitRequest() {
+  const L = T[lang].summaryLabels;
+  const sub = T[lang].emailSubject;
+  const lines = [
+    `${L.target}: ${selections.target}`,
+    `${L.height}: ${selections.height}`,
+    `${L.usage}: ${selections.usage.join(', ')}`,
+    `${L.material}: ${selections.material.join(', ')}`,
+    `${L.temp}: ${selections.temp}`,
+    '',
+    `${L.name}: ${document.getElementById('fName').value}`,
+    `${L.company}: ${document.getElementById('fCompany').value || '—'}`,
+    `${L.email}: ${document.getElementById('fEmail').value}`,
+    `${L.phone}: ${document.getElementById('fPhone').value || '—'}`,
+    `${L.qty}: ${document.getElementById('fQty').value || '—'}`,
+    `${L.delivery}: ${document.getElementById('fDelivery').value || '—'}`,
+    '',
+    `${L.notes}: ${document.getElementById('fNotes').value || '—'}`,
+  ];
+  const body = encodeURIComponent(lines.join('\n'));
+  const subject = encodeURIComponent(sub + ' — ' + document.getElementById('fName').value);
+  window.location.href = `mailto:info@sockies.at?subject=${subject}&body=${body}`;
+
+  document.getElementById('mainWrap').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+}
+
+/* ═══════ RESET ═══════ */
+function resetConfigurator() {
+  selections.target = null;
+  selections.height = null;
+  selections.usage = [];
+  selections.material = [];
+  selections.temp = null;
+  document.querySelectorAll('.option-card, .temp-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.step-panel input, .step-panel textarea').forEach(el => el.value = '');
+  document.getElementById('fileName').textContent = '';
+  document.getElementById('fileUpload').classList.remove('has-file');
+  document.getElementById('mainWrap').style.display = '';
+  document.querySelector('.progress-wrap').style.display = '';
+  document.getElementById('successScreen').classList.remove('show');
+  showStep(0);
+  updateSummary();
+}
+
+/* ═══════ TOAST ═══════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ═══════ INIT ═══════ */
+buildProgressBar();
+updateSummary();
+applyTranslations();
+</script>
+</body>
+</html>
