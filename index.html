@@ -826,27 +826,23 @@ footer a:hover { text-decoration: underline; }
       <h2 data-t="step5Title">Temperaturklasse</h2>
       <p class="subtitle" data-t="step5Sub">Für welche Temperaturen sollen die Socken geeignet sein?</p>
       <div class="temp-cards" id="grid-temp">
-        <div class="temp-card" data-value="TT A | 10–35 °C" onclick="selectOption(this,'temp')">
+        <div class="temp-card" data-value="10–35 °C" onclick="selectOption(this,'temp')">
           <div class="temp-icon">☀️</div>
-          <div class="temp-name">TT A</div>
           <div class="temp-range">10 – 35 °C</div>
           <div class="detail" data-t="tempA" style="margin-top:4px;font-size:12px;color:var(--gray)">Sommer & warme Tage</div>
         </div>
-        <div class="temp-card" data-value="TT B | 0–20 °C" onclick="selectOption(this,'temp')">
+        <div class="temp-card" data-value="0–20 °C" onclick="selectOption(this,'temp')">
           <div class="temp-icon">🌤️</div>
-          <div class="temp-name">TT B</div>
           <div class="temp-range">0 – 20 °C</div>
           <div class="detail" data-t="tempB" style="margin-top:4px;font-size:12px;color:var(--gray)">Frühling & Herbst</div>
         </div>
-        <div class="temp-card" data-value="TT C | -10 bis +5 °C" onclick="selectOption(this,'temp')">
+        <div class="temp-card" data-value="-10 bis +5 °C" onclick="selectOption(this,'temp')">
           <div class="temp-icon">🌨️</div>
-          <div class="temp-name">TT C</div>
           <div class="temp-range">-10 bis +5 °C</div>
           <div class="detail" data-t="tempC" style="margin-top:4px;font-size:12px;color:var(--gray)">Winter</div>
         </div>
-        <div class="temp-card" data-value="TT D | -20 bis 0 °C" onclick="selectOption(this,'temp')">
+        <div class="temp-card" data-value="-20 bis 0 °C" onclick="selectOption(this,'temp')">
           <div class="temp-icon">❄️</div>
-          <div class="temp-name">TT D</div>
           <div class="temp-range">-20 bis 0 °C</div>
           <div class="detail" data-t="tempD" style="margin-top:4px;font-size:12px;color:var(--gray)">Extreme Kälte</div>
         </div>
@@ -983,7 +979,7 @@ footer a:hover { text-decoration: underline; }
     </div>
   </div>
   <div class="min-order-note" data-t="minOrder">
-    <strong>Mindestbestellmenge:</strong> 200 Paar | <strong>Versand:</strong> Kostenlos innerhalb Österreichs ab 50 €
+    <strong>Mindestbestellmenge:</strong> 200 Paar | <strong>Preis pro Paar:</strong> ab 4,90 €
   </div>
 </section>
 
@@ -1072,7 +1068,7 @@ const T = {
     hiw5Title: 'Musterproduktion', hiw5Desc: 'Wir fertigen Testmuster an und senden dir Fotos zur finalen Freigabe. Anpassungen sind jederzeit möglich.',
     hiw6Title: 'Produktion', hiw6Desc: 'Nach deiner Freigabe starten wir die Serienproduktion: Stricken, Nähen, Bügeln und Etikettieren.',
     hiw7Title: 'Verpackung & Versand', hiw7Desc: 'Qualitätsgeprüfte Socken werden individuell verpackt und direkt an dich geliefert.',
-    minOrder: '<strong>Mindestbestellmenge:</strong> 200 Paar | <strong>Versand:</strong> Kostenlos innerhalb Österreichs ab 50 €',
+    minOrder: '<strong>Mindestbestellmenge:</strong> 200 Paar | <strong>Preis pro Paar:</strong> ab 4,90 €',
     galleryTitle: 'Unsere Referenzen',
     gallerySub: 'Bereits realisierte Custom-Designs für zufriedene Kunden.',
   },
@@ -1118,7 +1114,7 @@ const T = {
     hiw5Title: 'Sample Production', hiw5Desc: 'We produce test samples and send you photos for final approval. Adjustments possible anytime.',
     hiw6Title: 'Production', hiw6Desc: 'After your approval, we start mass production: knitting, sewing, ironing, and labeling.',
     hiw7Title: 'Packaging & Delivery', hiw7Desc: 'Quality-checked socks are individually packaged and delivered directly to you.',
-    minOrder: '<strong>Minimum order:</strong> 200 pairs | <strong>Shipping:</strong> Free within Austria from 50 €',
+    minOrder: '<strong>Minimum order:</strong> 200 pairs | <strong>Price per pair:</strong> from €4.90',
     galleryTitle: 'Our References',
     gallerySub: 'Custom designs already realized for satisfied customers.',
   }
