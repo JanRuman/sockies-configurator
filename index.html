@@ -1285,6 +1285,11 @@ function submitRequest() {
   formData.append(L.delivery, document.getElementById('fDelivery').value || '—');
   formData.append(L.notes, document.getElementById('fNotes').value || '—');
 
+  const fileInput = document.getElementById('designFile');
+  if (fileInput.files.length > 0) {
+    formData.append('attachment', fileInput.files[0]);
+  }
+
   const submitBtn = document.querySelector('.btn-submit');
   submitBtn.disabled = true;
   submitBtn.textContent = lang === 'de' ? '⏳ Wird gesendet...' : '⏳ Sending...';
