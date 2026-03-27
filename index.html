@@ -1265,29 +1265,45 @@ function handleFile(input) {
 function submitRequest() {
   const L = T[lang].summaryLabels;
   const sub = T[lang].emailSubject;
-  const lines = [
-    `${L.target}: ${selections.target}`,
-    `${L.height}: ${selections.height}`,
-    `${L.usage}: ${selections.usage.join(', ')}`,
-    `${L.material}: ${selections.material.join(', ')}`,
-    `${L.temp}: ${selections.temp}`,
-    '',
-    `${L.name}: ${document.getElementById('fName').value}`,
-    `${L.company}: ${document.getElementById('fCompany').value || '—'}`,
-    `${L.email}: ${document.getElementById('fEmail').value}`,
-    `${L.phone}: ${document.getElementById('fPhone').value || '—'}`,
-    `${L.qty}: ${document.getElementById('fQty').value || '—'}`,
-    `${L.delivery}: ${document.getElementById('fDelivery').value || '—'}`,
-    '',
-    `${L.notes}: ${document.getElementById('fNotes').value || '—'}`,
-  ];
-  const body = encodeURIComponent(lines.join('\n'));
-  const subject = encodeURIComponent(sub + ' — ' + document.getElementById('fName').value);
-  window.location.href = `mailto:info@sockies.at?subject=${subject}&body=${body}`;
 
-  document.getElementById('mainWrap').style.display = 'none';
-  document.querySelector('.progress-wrap').style.display = 'none';
-  document.getElementById('successScreen').classList.add('show');
+  const formData = new FormData();
+  formData.append('_subject', sub + ' — ' + document.getElementById('fName').value);
+  formData.append('_replyto', document.getElementById('fEmail').value);
+  formData.append('_template', 'table');
+  formData.append('_captcha', 'false');
+
+  formData.append(L.target, selections.target);
+  formData.append(L.height, selections.height);
+  formData.append(L.usage, selections.usage.join(', '));
+  formData.append(L.material, selections.material.join(', '));
+  formData.append(L.temp, selections.temp);
+  formData.append(L.name, document.getElementById('fName').value);
+  formData.append(L.company, document.getElementById('fCompany').value || '—');
+  formData.append(L.email, document.getElementById('fEmail').value);
+  formData.append(L.phone, document.getElementById('fPhone').value || '—');
+  formData.append(L.qty, document.getElementById('fQty').value || '—');
+  formData.append(L.delivery, document.getElementById('fDelivery').value || '—');
+  formData.append(L.notes, document.getElementById('fNotes').value || '—');
+
+  const submitBtn = document.querySelector('.btn-submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = lang === 'de' ? '⏳ Wird gesendet...' : '⏳ Sending...';
+
+  fetch('https://formsubmit.co/ajax/info@sockies.at', {
+    method: 'POST',
+    body: formData
+  })
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('mainWrap').style.display = 'none';
+    document.querySelector('.progress-wrap').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+  })
+  .catch(err => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = lang === 'de' ? '🧦 Anfrage absenden' : '🧦 Submit Request';
+    showToast(lang === 'de' ? 'Fehler beim Senden. Bitte versuche es erneut.' : 'Error sending. Please try again.');
+  });
 }
 
 /* ═══════ RESET ═══════ */
