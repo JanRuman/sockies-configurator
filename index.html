@@ -1265,53 +1265,57 @@ function handleFile(input) {
 function submitRequest() {
   const L = T[lang].summaryLabels;
   const sub = T[lang].emailSubject;
-  const pageUrl = window.location.href.split('?')[0];
 
-  // Use a hidden form for proper multipart/form-data submission (supports file attachments)
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = 'https://api.web3forms.com/submit';
-  form.enctype = 'multipart/form-data';
-  form.style.display = 'none';
+  const formData = new FormData();
+  formData.append('access_key', '724729');
+  formData.append('subject', sub + ' — ' + document.getElementById('fName').value);
+  formData.append('from_name', document.getElementById('fName').value);
+  formData.append('replyto', document.getElementById('fEmail').value);
 
-  const fields = {
-    'access_key': '724729',
-    'subject': sub + ' — ' + document.getElementById('fName').value,
-    'from_name': document.getElementById('fName').value,
-    'replyto': document.getElementById('fEmail').value,
-    'redirect': pageUrl + '?success=1',
-    [L.target]: selections.target,
-    [L.height]: selections.height,
-    [L.usage]: selections.usage.join(', '),
-    [L.material]: selections.material.join(', '),
-    [L.temp]: selections.temp,
-    [L.name]: document.getElementById('fName').value,
-    [L.company]: document.getElementById('fCompany').value || '—',
-    [L.email]: document.getElementById('fEmail').value,
-    [L.phone]: document.getElementById('fPhone').value || '—',
-    [L.qty]: document.getElementById('fQty').value || '—',
-    [L.delivery]: document.getElementById('fDelivery').value || '—',
-    [L.notes]: document.getElementById('fNotes').value || '—',
-  };
+  formData.append(L.target, selections.target);
+  formData.append(L.height, selections.height);
+  formData.append(L.usage, selections.usage.join(', '));
+  formData.append(L.material, selections.material.join(', '));
+  formData.append(L.temp, selections.temp);
+  formData.append(L.name, document.getElementById('fName').value);
+  formData.append(L.company, document.getElementById('fCompany').value || '—');
+  formData.append(L.email, document.getElementById('fEmail').value);
+  formData.append(L.phone, document.getElementById('fPhone').value || '—');
+  formData.append(L.qty, document.getElementById('fQty').value || '—');
+  formData.append(L.delivery, document.getElementById('fDelivery').value || '—');
+  formData.append(L.notes, document.getElementById('fNotes').value || '—');
 
-  for (const [name, value] of Object.entries(fields)) {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = name;
-    input.value = value;
-    form.appendChild(input);
-  }
-
-  // Clone file input into the form so the attachment is included
+  // Attach file directly from the original input (FormData handles files correctly, unlike cloneNode)
   const fileInput = document.getElementById('designFile');
   if (fileInput.files.length > 0) {
-    const fileClone = fileInput.cloneNode(true);
-    fileClone.name = 'attachment';
-    form.appendChild(fileClone);
+    formData.append('attachment', fileInput.files[0], fileInput.files[0].name);
   }
 
-  document.body.appendChild(form);
-  form.submit();
+  const submitBtn = document.querySelector('.btn-submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = lang === 'de' ? '⏳ Wird gesendet...' : '⏳ Sending...';
+
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    body: formData
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('mainWrap').style.display = 'none';
+      document.querySelector('.progress-wrap').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.textContent = lang === 'de' ? '🧦 Anfrage absenden' : '🧦 Submit Request';
+      showToast((lang === 'de' ? 'Fehler: ' : 'Error: ') + (data.message || 'unknown'));
+    }
+  })
+  .catch(err => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = lang === 'de' ? '🧦 Anfrage absenden' : '🧦 Submit Request';
+    showToast(lang === 'de' ? 'Fehler beim Senden. Bitte versuche es erneut.' : 'Error sending. Please try again.');
+  });
 }
 
 /* ═══════ RESET ═══════ */
