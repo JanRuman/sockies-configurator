@@ -1267,7 +1267,6 @@ function submitRequest() {
   const sub = T[lang].emailSubject;
 
   const formData = new FormData();
-  formData.append('access_key', '07376a82-ba00-4df6-aac6-1b6c6480f6c2');
   formData.append('subject', sub + ' — ' + document.getElementById('fName').value);
   formData.append('from_name', document.getElementById('fName').value);
   formData.append('replyto', document.getElementById('fEmail').value);
@@ -1295,7 +1294,7 @@ function submitRequest() {
   submitBtn.disabled = true;
   submitBtn.textContent = lang === 'de' ? '⏳ Wird gesendet...' : '⏳ Sending...';
 
-  fetch('https://api.web3forms.com/submit', {
+  fetch('submit.php', {
     method: 'POST',
     body: formData
   })
